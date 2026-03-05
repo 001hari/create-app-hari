@@ -5,11 +5,8 @@ import User from '../models/user.model';
 import asyncHandler from '../utils/asyncHandler';
 
 const protect = asyncHandler(async (req: any, res: Response, next: NextFunction) => {
-  let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  }
+  const token = req.cookies.token;
 
   if (!token) {
     throw new ApiError(401, 'Not authorized to access this route');

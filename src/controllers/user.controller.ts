@@ -2,11 +2,7 @@ import { Request, Response } from 'express';
 import asyncHandler from '../utils/asyncHandler';
 import * as userService from '../services/user.service';
 
-/**
- * @desc    Register user
- * @route   POST /api/auth/register
- * @access  Public
- */
+
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const result = await userService.register(req.body);
 
@@ -16,13 +12,17 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-/**
- * @desc    Login user
- * @route   POST /api/auth/login
- * @access  Public
- */
+
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const result = await userService.login(req.body);
+  console.log(result);
+
+  res.cookie('token', result.token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: true,
+    maxAge: 60 * 60 * 24*1000,
+  })
 
   res.status(200).json({
     success: true,
@@ -30,11 +30,6 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-/**
- * @desc    Get current logged in user
- * @route   GET /api/auth/me
- * @access  Private
- */
 export const getMe = asyncHandler(async (req: any, res: Response) => {
   res.status(200).json({
     success: true,
