@@ -10,6 +10,13 @@ import * as userService from '../services/user.service';
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const result = await userService.register(req.body);
 
+  const token = result.token;
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: true,
+    maxAge: 60*60*24*1000,
+  })
   res.status(201).json({
     success: true,
     data: result,
@@ -23,7 +30,13 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
  */
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const result = await userService.login(req.body);
+  const token = result.token;
 
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: true,
+    maxAge: 60*60*24*1000,
+  })
   res.status(200).json({
     success: true,
     data: result,

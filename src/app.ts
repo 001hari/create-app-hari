@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import errorHandler from './middlewares/error.middleware';
 import routes from './routes/index';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ app.use(helmet());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-
+app.use(cookieParser());
 // Body parser, reading data from body into req.body
 app.use(express.json());
 

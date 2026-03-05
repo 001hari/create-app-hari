@@ -1,6 +1,6 @@
 import { IncomingMessage, Server, ServerResponse } from 'node:http';
 import app from './app';
-import connectDB from './config/db';
+import {connectDB} from './config/db';
 
 const PORT = process.env.PORT || 5000;
 
